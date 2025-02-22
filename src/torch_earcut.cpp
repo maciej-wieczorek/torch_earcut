@@ -37,7 +37,7 @@ std::vector<torch::Tensor> triangulate(torch::Tensor contours)
         {
             std::array<std::span<Point>, 1> contourView({std::span<Point>(reinterpret_cast<Point *>(contours[i].data_ptr()), contours.size(1))});
             earcut(contourView);
-            indices[i] = torch::from_blob(earcut.indices.data(), {earcut.indices.size()}, options).clone();
+            indices[i] = torch::from_blob(earcut.indices.data(), {static_cast<int64_t>(earcut.indices.size())}, options).clone();
         }
     }
     return indices;
