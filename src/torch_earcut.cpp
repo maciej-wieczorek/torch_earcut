@@ -33,7 +33,7 @@ std::vector<torch::Tensor> triangulate(torch::Tensor contours)
     {
         mapbox::detail::Earcut<N> earcut;
 #pragma omp for schedule(dynamic, 1)
-        for (size_t i = 0; i < contours.size(0); i++)
+        for (int64_t i = 0; i < static_cast<int64_t>(contours.size(0)); i++)
         {
             std::array<std::span<Point>, 1> contourView({std::span<Point>(reinterpret_cast<Point *>(contours[i].data_ptr()), contours.size(1))});
             earcut(contourView);
